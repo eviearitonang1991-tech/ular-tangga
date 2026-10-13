@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Academic Snakes & Ladders — Design By Ms. Evi</title>
+<style>
+:root{--bg:#f3f6ff;--ink:#19233c;--muted:#68738b;--panel:#fff;--line:#dce3f2;--blue:#4169e1;--purple:#7957d5;--mint:#d8f8e7;--gold:#ffe7a3;--pink:#ffe0e9;--shadow:0 12px 35px #263a6514}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 10% 0,#e4edff,transparent 32%),var(--bg);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink)}
+header{padding:22px clamp(14px,3vw,38px);background:linear-gradient(120deg,#243c86,#6751bd 65%,#9b70d6);color:#fff}
+.brand{max-width:1400px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand h1{font-size:clamp(23px,3vw,38px);line-height:1.1;margin:0 0 8px}.brand p{margin:0;color:#e9e8ff}.credit{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#ffe7a3;font-weight:800}
+main{max-width:1400px;margin:22px auto;padding:0 14px 40px}.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}.btn,button{border:0;border-radius:11px;padding:10px 14px;font:inherit;font-weight:700;cursor:pointer;background:var(--blue);color:white;box-shadow:0 4px 12px #4169e126}.btn.secondary,button.secondary{background:#edf1ff;color:#344783;box-shadow:none;border:1px solid #dbe3ff}.btn.gold{background:#e4a923;color:#30240b}.btn.danger{background:#c94c68}.btn:disabled,button:disabled{opacity:.45;cursor:not-allowed}
+.layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(300px,.8fr);gap:16px;align-items:start}.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow);min-width:0}.panel h2{font-size:18px;margin:0 0 12px}.sub{color:var(--muted);font-size:13px}.board{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:4px;aspect-ratio:1.15/1}.cell{position:relative;min-width:0;min-height:47px;border-radius:7px;border:1px solid #d9e0ef;padding:4px;background:#f7f9ff;overflow:hidden;font-size:clamp(9px,.8vw,12px)}.cell:nth-child(4n+1){background:#e8f6ff}.cell:nth-child(4n+2){background:#fff5d8}.cell:nth-child(4n+3){background:#f2eaff}.cell:nth-child(4n){background:#e6f9ef}.cell .num{font-weight:900}.cell .type{display:block;font-size:10px;line-height:1.1;margin-top:2px;color:#4f5b77}.cell.special{border:2px solid #efb72e}.cell.snake{background:#ffe0e9;border-color:#f3a0b8}.cell.ladder{background:#d8f8e7;border-color:#78d9a2}.cell.start{background:#dbeafe}.cell.finish{background:#ffe7a3}.tokens{display:flex;flex-wrap:wrap;gap:2px;margin-top:3px}.token{font-size:10px;border-radius:99px;padding:1px 4px;background:#263c88;color:#fff;font-weight:800}.legend{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0 0}.legend span{font-size:12px;background:#f1f4fb;border-radius:20px;padding:5px 9px}
+.field{display:grid;gap:5px;margin:9px 0}.field label{font-weight:700;font-size:13px}.field input,.field select,.field textarea{width:100%;border:1px solid #ccd5e7;border-radius:10px;padding:10px;font:inherit;background:#fff;color:var(--ink)}.field textarea{min-height:80px;resize:vertical}.row{display:flex;gap:9px;flex-wrap:wrap}.row>*{flex:1}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}.stat{background:#f4f6ff;border-radius:12px;padding:10px}.stat strong{display:block;font-size:22px}.stat span{font-size:12px;color:var(--muted)}.list{display:grid;gap:7px}.player{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:9px;padding:9px 10px;border:1px solid var(--line);border-radius:11px}.player small{display:block;color:var(--muted)}.score{font-weight:900}.pill{font-size:11px;border-radius:99px;padding:4px 7px;background:#edf1ff;color:#344783;font-weight:800}.notice{padding:10px 12px;background:#fff8df;border:1px solid #f2dda0;border-radius:11px;font-size:13px;margin:10px 0}.status{padding:8px 10px;border-radius:9px;background:#e8f9ee;color:#20643b;font-size:13px}.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}.tabs button{background:#edf1ff;color:#344783;box-shadow:none;padding:8px 11px}.tabs button.active{background:#344783;color:#fff}.hidden{display:none!important}.dice{font-size:48px;text-align:center;margin:5px}.question{background:#f5f7ff;border-radius:14px;padding:14px;margin:12px 0}.answers{display:grid;grid-template-columns:1fr 1fr;gap:8px}.answers button{background:#fff;color:var(--ink);border:1px solid #d4dcef;box-shadow:none;text-align:left}.answers button:hover{border-color:var(--blue)}.answers button.selected{background:#e4eaff;border-color:var(--blue)}.qmeta{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:12px}.foot{margin-top:14px;color:var(--muted);font-size:12px;text-align:center}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.board{gap:3px}.cell{min-height:38px;padding:3px}.cell .type{font-size:8px}.brand{align-items:flex-start;flex-direction:column}.board-panel{order:1}.side-panel{order:2}}
+@media(max-width:480px){main{padding:0 8px 25px}.panel{padding:11px;border-radius:14px}.board{gap:2px}.cell{min-height:30px;border-radius:4px;font-size:9px}.cell .type{display:none}.token{font-size:8px;padding:0 3px}.answers{grid-template-columns:1fr}.stats{gap:5px}.stat{padding:7px}.stat strong{font-size:18px}}
+</style>
+</head>
+<body>
+<header><div class="brand"><div><h1>🐍 Academic Snakes & Ladders</h1><p>Quest of Knowledge · Learn, Think, Climb!</p></div><div class="credit">Design By Ms. Evi</div></div></header>
+<main>
+<div class="toolbar">
+<button id="tabGame" class="btn">🎲 Permainan</button><button id="tabEditor" class="btn secondary">✏️ Editor Soal</button><button id="tabSettings" class="btn secondary">⚙️ Pengaturan & Firebase</button>
+</div>
+<section id="gameView">
+<div class="layout">
+<div class="panel board-panel">
+<div class="row" style="align-items:center"><div><h2>🏁 Papan Petualangan 1–100</h2><div class="sub">Jalur bergerak zig-zag dari START menuju FINISH.</div></div><div style="text-align:right"><span class="pill" id="gameCodeLabel">KODE: LOCAL</span></div></div>
+<div id="board" class="board" aria-label="Papan permainan"></div>
+<div class="legend"><span>🐍 Ular</span><span>🪜 Tangga</span><span>⚡ Tantangan</span><span>🎁 Kesempatan</span><span>⭐ Peserta</span></div>
+<div class="notice">Mode demo lokal aktif jika Firebase belum dikonfigurasi. Data demo tersimpan di browser ini, belum dibagikan ke perangkat lain.</div>
+</div>
+<div class="panel side-panel">
+<div class="tabs"><button id="teacherTab" class="active">Layar Guru</button><button id="studentTab">Layar Peserta</button></div>
+<div id="teacherPane">
+<h2>🎮 Ruang Kendali Guru</h2>
+<div class="stats"><div class="stat"><strong id="countPlayers">0</strong><span>Peserta</span></div><div class="stat"><strong id="countRound">0</strong><span>Giliran selesai</span></div><div class="stat"><strong id="countOnline">LOCAL</strong><span>Koneksi</span></div></div>
+<div class="field"><label for="mode">Mode permainan</label><select id="mode"><option value="individual">Individu</option><option value="group">Kelompok</option></select></div>
+<div class="field"><label for="maxPlayers">Batas peserta/tim</label><input id="maxPlayers" type="number" min="2" max="60" value="30"></div>
+<div class="row"><button id="createGame">Buat ruang & kode</button><button id="startGame" class="gold">▶ Mulai</button></div>
+<div class="row" style="margin-top:8px"><button id="rollTeacher" class="secondary">🎲 Lempar dadu (guru)</button><button id="resetGame" class="danger">Reset permainan</button></div>
+<div class="field"><label>Kode bergabung</label><input id="joinCodeDisplay" readonly value="LOCAL"><div class="row"><button id="copyCode" class="secondary">Salin kode</button><button id="showQr" class="secondary">Tampilkan QR</button></div><div id="qrWrap" class="hidden" style="text-align:center;margin-top:10px"><img id="qrImg" alt="QR kode bergabung" style="max-width:180px;width:100%;border-radius:10px"><div class="sub">QR menggunakan layanan pembuat QR online; masukkan URL situs setelah aplikasi dipublikasikan.</div></div></div>
+<h2 style="margin-top:18px">👥 Papan skor</h2><div class="sub">Urut berdasarkan skor; posisi semua peserta ditampilkan.</div><div id="teacherPlayers" class="list" style="margin-top:9px"></div>
+<div class="field"><label for="addName">Tambah peserta untuk uji coba</label><div class="row"><input id="addName" placeholder="Nama peserta / tim"><button id="addPlayer">Tambah</button></div></div>
+</div>
+<div id="studentPane" class="hidden">
+<h2>📱 Bergabung ke permainan</h2>
+<div class="field"><label for="joinCode">Kode permainan</label><input id="joinCode" placeholder="Mis. EV1234"></div>
+<div class="field"><label for="playerName">Nama peserta atau tim</label><input id="playerName" maxlength="28" placeholder="Masukkan nama"></div>
+<button id="joinGame">Gabung / Daftar di perangkat ini</button>
+<div id="studentStatus" class="status" style="margin-top:10px">Belum bergabung.</div>
+<div class="question"><div class="qmeta"><span id="questionSquare">Kotak —</span><span id="questionType">Soal akan muncul di sini</span></div><h3 id="questionText">Tunggu guru memulai permainan.</h3><div id="answerArea"></div><button id="submitAnswer" style="margin-top:10px" disabled>Kirim jawaban</button><div id="answerFeedback" class="sub" style="margin-top:8px"></div></div>
+<div class="row"><button id="rollStudent" class="gold">🎲 Lempar dadu</button><div class="dice" id="dice">🎲</div></div>
+<h2 style="margin-top:15px">🏆 Posisi peserta</h2><div id="studentPlayers" class="list"></div>
+</div>
+</div>
+</div>
+</section>
+<section id="editorView" class="panel hidden">
+<h2>✏️ Editor Bank Soal — 100 kotak × 8 variasi</h2>
+<p class="sub">Pilih nomor kotak dan variasi. Soal contoh adalah placeholder yang perlu diganti guru sebelum digunakan untuk penilaian sungguhan. Kunci jawaban tidak ditampilkan pada layar peserta.</p>
+<div class="row">
+<div class="field"><label for="editSquare">Nomor kotak</label><select id="editSquare"></select></div>
+<div class="field"><label for="editVariant">Variasi soal</label><select id="editVariant"><option value="0">Variasi 1</option><option value="1">Variasi 2</option><option value="2">Variasi 3</option><option value="3">Variasi 4</option><option value="4">Variasi 5</option><option value="5">Variasi 6</option><option value="6">Variasi 7</option><option value="7">Variasi 8</option></select></div>
+</div>
+<div class="row"><div class="field"><label for="editCategory">Materi / kategori kotak</label><input id="editCategory" placeholder="Contoh: Bilangan bulat"></div><div class="field"><label for="editKind">Jenis soal</label><select id="editKind"><option value="mcq">Pilihan ganda</option><option value="short">Isian singkat</option><option value="hots">HOTS / penalaran</option></select></div></div>
+<div class="field"><label for="editQuestion">Pertanyaan</label><textarea id="editQuestion" placeholder="Tuliskan pertanyaan..."></textarea></div>
+<div id="optionFields">
+<div class="row"><div class="field"><label for="opt0">Pilihan A</label><input id="opt0"></div><div class="field"><label for="opt1">Pilihan B</label><input id="opt1"></div></div>
+<div class="row"><div class="field"><label for="opt2">Pilihan C</label><input id="opt2"></div><div class="field"><label for="opt3">Pilihan D</label><input id="opt3"></div></div>
+</div>
+<div class="row"><div class="field"><label for="editAnswer">Kunci jawaban (teks harus sesuai untuk PG)</label><input id="editAnswer" placeholder="Mis. A atau 24"></div><div class="field"><label for="editPoints">Poin jawaban benar</label><input id="editPoints" type="number" min="0" max="1000" value="10"></div></div>
+<div class="row"><button id="saveQuestion">Simpan variasi soal</button><button id="exportQuestions" class="secondary">Ekspor bank soal JSON</button><button id="importQuestions" class="secondary">Impor JSON</button><input type="file" id="importFile" accept=".json,application/json" class="hidden"></div>
+<div id="editorMessage" class="status" style="margin-top:10px">Perubahan tersimpan di browser ini.</div>
+</section>
+<section id="settingsView" class="panel hidden">
+<h2>⚙️ Pengaturan permainan & Firebase</h2>
+<p class="sub">Aplikasi ini dapat diuji dalam mode lokal. Untuk sinkronisasi lintas perangkat, buat proyek Firebase dan masukkan konfigurasi Web App di bawah ini.</p>
+<div class="notice"><strong>Penting:</strong> konfigurasi web bukan pengganti keamanan. Jangan membuka seluruh database untuk semua orang. Sebelum dipakai di kelas, atur Authentication dan Security Rules yang membatasi hak guru, peserta, dan ruang permainan. Panduan resmi: <a href="https://firebase.google.com/docs/database/web/start" target="_blank" rel="noopener">Firebase Realtime Database untuk web</a>.</div>
+<div class="field"><label for="firebaseConfig">Firebase Web App config (JSON)</label><textarea id="firebaseConfig" placeholder='{"apiKey":"...","authDomain":"...","databaseURL":"https://...firebasedatabase.app","projectId":"...","appId":"..."}'></textarea></div>
+<div class="row"><button id="connectFirebase">Hubungkan Firebase</button><button id="disconnectFirebase" class="secondary">Gunakan mode lokal</button></div>
+<div id="firebaseStatus" class="status" style="margin-top:10px">Firebase belum dikonfigurasi.</div>
+<h2 style="margin-top:22px">Aturan permainan saat ini</h2>
+<ul>
+<li>Individu: boleh berada di kotak yang sama. Jawaban salah mengurangi posisi 1 kotak, skor tetap.</li>
+<li>Kelompok: ketika tim masuk ke kotak yang sudah ditempati tim lain, tim yang lebih dahulu menempati kotak kembali ke START; skor tetap.</li>
+<li>Ular/tangga: perpindahan otomatis setelah soal diselesaikan. Guru dapat menyesuaikan posisi ular dan tangga di kode awal.</li>
+<li>Tantangan: soal HOTS. Jawaban benar mendapat bonus 20 poin; jawaban salah tetap mengikuti aturan mundur mode.</li>
+<li>Kesempatan: hadiah acak seperti +10 poin, maju 2 kotak, atau perlindungan ular satu kali.</li>
+<li>Finish: peserta mencapai kotak 100; guru dapat memilih untuk mengakhiri permainan segera atau membiarkan peserta lain menyelesaikan.</li>
+</ul>
+<h2 style="margin-top:22px">Panduan menyiapkan Firebase</h2>
+<ol>
+<li>Buka <a href="https://console.firebase.google.com/" target="_blank" rel="noopener">Firebase Console</a> dan buat proyek baru.</li>
+<li>Tambahkan aplikasi Web (ikon <strong>&lt;/&gt;</strong>), lalu salin konfigurasi SDK ke kolom di atas.</li>
+<li>Di menu Build, buka Realtime Database dan buat database. Catat URL database yang ditampilkan.</li>
+<li>Aktifkan Authentication (disarankan akun guru dan autentikasi peserta yang sesuai kebutuhan kelas).</li>
+<li>Atur Security Rules agar hanya guru berwenang dapat mengubah status permainan, skor, kunci jawaban, dan posisi; peserta hanya boleh mengirim jawaban untuk identitasnya sendiri.</li>
+<li>Publikasikan aplikasi melalui hosting HTTPS, lalu gunakan URL situs itu untuk kode/QR. File HTML lokal tidak dapat menjadi tujuan QR yang bisa diakses perangkat lain.</li>
+<li>Uji dengan dua perangkat sebelum dipakai di kelas. Jangan menggunakan aturan database terbuka untuk penggunaan nyata.</li>
+</ol>
+<p class="sub">Dokumentasi keamanan: <a href="https://firebase.google.com/docs/database/security" target="_blank" rel="noopener">Security Rules</a> · <a href="https://firebase.google.com/docs/auth/web/anonymous-auth" target="_blank" rel="noopener">Anonymous Authentication</a>.</p>
+</section>
+<div class="foot">Academic Snakes & Ladders: Quest of Knowledge · Design By Ms. Evi · Prototype web</div>
+</main>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+import { getDatabase, ref, set, update, onValue, get } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+
+const $ = id => document.getElementById(id);
+const SNAKES = {17:7, 29:12, 38:19, 47:30, 56:36, 64:48, 73:51, 82:62, 91:74, 98:79};
+const LADDERS = {4:14, 9:31, 21:42, 28:46, 36:57, 51:67, 62:81, 71:89, 79:93, 87:96};
+const CHALLENGES = new Set([8,18,27,37,49,59,68,77,88,97]);
+const CHANCES = new Set([5,15,25,35,45,55,65,75,85,95]);
+let questions = {}, players = {}, mode = "individual", roomCode = "LOCAL", started = false, turnCount = 0, currentPlayerId = null, activeQuestion = null, joinedId = null, db = null, auth = null, firebaseApp = null, remoteRoomRef = null, unsubRoom = null, isRemote = false, localGameUrl = location.href;
+const randomCode = () => "EV" + Math.random().toString(36).slice(2,6).toUpperCase();
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function initQuestions(){
+  for(let n=1;n<=100;n++){
+    const category = CHALLENGES.has(n) ? "Tantangan HOTS" : CHANCES.has(n) ? "Kesempatan" : SNAKES[n] ? "Ular" : LADDERS[n] ? "Tangga" : `Materi Kotak ${n}`;
+    questions[n] = Array.from({length:8},(_,i)=>({category,kind:i%3===2?"hots":i%3===1?"short":"mcq",question:`[GANTI SOAL] Kotak ${n}, variasi ${i+1}: tuliskan pertanyaan sesuai materi ${category}.`,options:["Pilihan A","Pilihan B","Pilihan C","Pilihan D"],answer:"A",points:10}));
+  }
+}
+function saveLocal(){try{localStorage.setItem("asl_questions_v1",JSON.stringify(questions));localStorage.setItem("asl_players_v1",JSON.stringify(players));}catch{}}
+function loadLocal(){try{questions=JSON.parse(localStorage.getItem("asl_questions_v1"))||questions;players=JSON.parse(localStorage.getItem("asl_players_v1"))||{};}catch{}}
+function boardNumberOrder(){let nums=[];for(let row=9;row>=0;row--){let line=[];for(let col=1;col<=10;col++)line.push(row*10+col);if((9-row)%2===1)line.reverse();nums.push(...line);}return nums;}
+function renderBoard(){
+ const b=$("board");b.innerHTML="";
+ boardNumberOrder().forEach(n=>{const cell=document.createElement("div");cell.className="cell"+(SNAKES[n]?" snake":LADDERS[n]?" ladder":CHALLENGES.has(n)||CHANCES.has(n)?" special":"")+(n===1?" start":"")+(n===100?" finish":"");
+ let type=SNAKES[n]?`🐍 ↓${SNAKES[n]}`:LADDERS[n]?`🪜 ↑${LADDERS[n]}`:CHALLENGES.has(n)?"⚡ HOTS":CHANCES.has(n)?"🎁 Bonus":n===1?"START":n===100?"FINISH":questions[n]?.[0]?.category||"Materi";
+ let tok=Object.values(players).filter(p=>Number(p.position)===n).map(p=>`<span class="token">${esc(p.name.slice(0,7))}</span>`).join("");
+ cell.innerHTML=`<span class="num">${n}</span><span class="type">${esc(type)}</span><div class="tokens">${tok}</div>`;b.appendChild(cell);});
+ renderPlayers();
+}
+function renderPlayers(){
+ const arr=Object.entries(players).sort((a,b)=>(b[1].score||0)-(a[1].score||0));
+ $("countPlayers").textContent=arr.length;$("countRound").textContent=turnCount;$("gameCodeLabel").textContent="KODE: "+roomCode;$("joinCodeDisplay").value=roomCode;
+ const markup=arr.map(([id,p],i)=>`<div class="player"><div><strong>${i+1}. ${esc(p.name)}</strong><small>Kotak ${p.position||1}${p.online===false?" · offline":""}</small></div><span class="pill">${p.position||1}/100</span><span class="score">${p.score||0} pt</span></div>`).join("")||'<div class="sub">Belum ada peserta. Tambahkan peserta demo atau bagikan kode ruang.</div>';
+ $("teacherPlayers").innerHTML=markup;$("studentPlayers").innerHTML=markup;
+}
+function showView(which){["gameView","editorView","settingsView"].forEach(id=>$(id).classList.toggle("hidden",id!==which));$("tabGame").className=which==="gameView"?"btn":"btn secondary";$("tabEditor").className=which==="editorView"?"btn":"btn secondary";$("tabSettings").className=which==="settingsView"?"btn":"btn secondary";}
+function persist(){saveLocal();renderBoard();if(isRemote&&remoteRoomRef){update(remoteRoomRef,{players,mode,started,turnCount,updatedAt:Date.now()}).catch(e=>setStatus("firebaseStatus","Gagal sinkron: "+e.message));}}
+function setStatus(id,msg){$(id).textContent=msg;}
+function addPlayer(name, id=null){name=name.trim();if(!name)return alert("Masukkan nama peserta/tim.");if(Object.keys(players).length>=Number($("maxPlayers").value||30))return alert("Batas peserta/tim sudah tercapai.");const pid=id||"p_"+Math.random().toString(36).slice(2,10);players[pid]={name,position:1,score:0,online:true,joinedAt:Date.now(),shield:false,answered:[]};persist();return pid;}
+function makeQuestion(n,pid){const bank=questions[n]||[];if(!bank.length)return null;const used=players[pid]?.answered||[];let choices=bank.map((q,i)=>i).filter(i=>!used.includes(`${n}:${i}`));if(!choices.length)choices=bank.map((q,i)=>i);const ix=choices[Math.floor(Math.random()*choices.length)];return {...bank[ix],square:n,variant:ix};}
+function setQuestion(q){
+ activeQuestion=q;if(!q){$("questionText").textContent="Belum ada soal.";return;}
+ $("questionSquare").textContent="Kotak "+q.square+" · Variasi "+(q.variant+1);$("questionType").textContent=q.kind==="mcq"?"Pilihan ganda":q.kind==="hots"?"HOTS / penalaran":"Isian singkat";
+ $("questionText").textContent=q.question;$("answerFeedback").textContent="";$("submitAnswer").disabled=false;
+ const area=$("answerArea");area.innerHTML="";
+ if(q.kind==="mcq"){const wrap=document.createElement("div");wrap.className="answers";q.options.forEach((op,i)=>{const btn=document.createElement("button");btn.textContent=String.fromCharCode(65+i)+". "+op;btn.onclick=()=>{wrap.querySelectorAll("button").forEach(x=>x.classList.remove("selected"));btn.classList.add("selected");area.dataset.answer=String.fromCharCode(65+i);};wrap.appendChild(btn);});area.appendChild(wrap);}
+ else {const inp=document.createElement("input");inp.placeholder="Ketik jawaban di sini";inp.style.cssText="width:100%;padding:11px;border:1px solid #ccd5e7;border-radius:9px;font:inherit";inp.id="shortAnswer";area.appendChild(inp);}
+}
+function normalize(a){return String(a??"").trim().toLowerCase().replace(/\s+/g,"");}
+function startTurn(pid){
+ if(!started)return alert("Guru harus memulai permainan terlebih dahulu.");if(!players[pid])return alert("Peserta tidak ditemukan.");
+ currentPlayerId=pid;const roll=1+Math.floor(Math.random()*6);$("dice").textContent=["⚀","⚁","⚂","⚃","⚄","⚅"][roll-1];
+ let p=players[pid], target=Math.min(100,(p.position||1)+roll);p.position=target;turnCount++;
+ if(mode==="group"){
+  const collision=Object.entries(players).find(([otherId,other])=>otherId!==pid&&other.position===target);
+  if(collision){players[collision[0]].position=1;setStatus("studentStatus",`${collision[1].name} kembali ke START karena tabrakan tim. Skornya tetap.`);}
+ }
+ if(SNAKES[target]){if(p.shield){p.shield=false;setStatus("studentStatus","Perisai digunakan! Kamu terhindar dari ular.");}else{p.position=SNAKES[target];setStatus("studentStatus",`Aduh! Ular membawamu ke kotak ${p.position}. Skor tetap.`);}}
+ else if(LADDERS[target]){p.position=LADDERS[target];setStatus("studentStatus",`Hebat! Naik tangga ke kotak ${p.position}.`);}
+ else if(CHANCES.has(target)){const reward=Math.floor(Math.random()*3);if(reward===0){p.score+=10;setStatus("studentStatus","Kesempatan: bonus +10 poin!");}else if(reward===1){p.position=Math.min(100,p.position+2);setStatus("studentStatus","Kesempatan: maju 2 kotak!");}else{p.shield=true;setStatus("studentStatus","Kesempatan: kamu mendapat perisai ular!");}}
+ persist();if(p.position>=100){setStatus("studentStatus",`${p.name} mencapai FINISH!`);if(confirm(`${p.name} mencapai FINISH. Akhiri permainan?`))started=false;persist();return;}
+ setQuestion(makeQuestion(p.position,pid));if(joinedId!==pid)setStatus("studentStatus",`Giliran ${p.name}. Dadu ${roll}; soal kotak ${p.position}. Guru dapat mengatur giliran berikutnya.`);
+}
+function submitAnswer(){
+ if(!activeQuestion||!currentPlayerId)return;const q=activeQuestion;const p=players[currentPlayerId];if(!p)return;
+ const answer=q.kind==="mcq"?$("answerArea").dataset.answer:$("shortAnswer")?.value;
+ if(answer===undefined||String(answer).trim()==="")return alert("Pilih atau isi jawaban terlebih dahulu.");
+ const correct=normalize(answer)===normalize(q.answer);p.answered=p.answered||[];p.answered.push(`${q.square}:${q.variant}`);
+ if(correct){p.score=(p.score||0)+Number(q.points||10)+(q.kind==="hots"?20:0);$("answerFeedback").textContent=`✅ Benar! +${Number(q.points||10)+(q.kind==="hots"?20:0)} poin.`;if(CHALLENGES.has(q.square))setStatus("studentStatus","Tantangan berhasil! Bonus HOTS diberikan.");}
+ else {if(mode==="individual")p.position=Math.max(1,(p.position||1)-1);$("answerFeedback").textContent="❌ Belum tepat. Skor tetap; posisi mundur sesuai aturan mode.";}
+ activeQuestion=null;$("submitAnswer").disabled=true;persist();renderBoard();
+}
+function fillEditor(){
+ const n=Number($("editSquare").value||1),i=Number($("editVariant").value||0),q=questions[n][i];
+ $("editCategory").value=q.category||"";$("editKind").value=q.kind||"mcq";$("editQuestion").value=q.question||"";$("editAnswer").value=q.answer??"";$("editPoints").value=q.points??10;
+ for(let j=0;j<4;j++)$("opt"+j).value=q.options?.[j]||"";
+ $("optionFields").classList.toggle("hidden",q.kind!=="mcq");
+}
+function saveEditor(){
+ const n=Number($("editSquare").value),i=Number($("editVariant").value),kind=$("editKind").value;
+ questions[n][i]={category:$("editCategory").value.trim()||`Materi Kotak ${n}`,kind,question:$("editQuestion").value.trim(),options:[0,1,2,3].map(j=>$("opt"+j).value.trim()),answer:$("editAnswer").value.trim(),points:Math.max(0,Number($("editPoints").value||10))};
+ saveLocal();renderBoard();setStatus("editorMessage",`Tersimpan: kotak ${n}, variasi ${i+1}.`);if(isRemote&&remoteRoomRef)update(remoteRoomRef,{questions}).catch(e=>setStatus("editorMessage","Gagal menyimpan ke Firebase: "+e.message));
+}
+function exportQs(){const blob=new Blob([JSON.stringify(questions,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="academic-snakes-ladders-bank-soal.json";a.click();URL.revokeObjectURL(a.href);}
+function createRoom(){roomCode=randomCode();started=false;turnCount=0;setStatus("firebaseStatus",isRemote?"Ruang dibuat; sinkronisasi aktif.":"Ruang lokal dibuat. Untuk perangkat lain, hubungkan Firebase dan hosting HTTPS.");persist();renderPlayers();}
+async function connectFirebase(){
+ try{
+  const config=JSON.parse($("firebaseConfig").value);if(!config.apiKey||!config.databaseURL||!config.projectId)throw new Error("Config perlu apiKey, databaseURL, dan projectId.");
+  firebaseApp=initializeApp(config,"asl_"+Date.now());auth=getAuth(firebaseApp);await signInAnonymously(auth);db=getDatabase(firebaseApp);isRemote=true;
+  if(unsubRoom)unsubRoom();remoteRoomRef=ref(db,"classroomGames/"+roomCode);
+  await set(remoteRoomRef,{roomCode,mode,started,turnCount,players,questions,updatedAt:Date.now()});
+  unsubRoom=onValue(remoteRoomRef,snap=>{const data=snap.val();if(!data)return;players=data.players||{};mode=data.mode||mode;started=!!data.started;turnCount=data.turnCount||0;if(data.questions)questions=data.questions;renderBoard();});
+  $("countOnline").textContent="LIVE";setStatus("firebaseStatus","Firebase terhubung. Pastikan Security Rules membatasi hak akses sebelum digunakan nyata.");persist();
+ }catch(e){isRemote=false;$("countOnline").textContent="LOCAL";setStatus("firebaseStatus","Belum terhubung: "+e.message+" — cek konfigurasi, Authentication, databaseURL, dan Security Rules.");}
+}
+$("tabGame").onclick=()=>showView("gameView");$("tabEditor").onclick=()=>{showView("editorView");fillEditor();};$("tabSettings").onclick=()=>showView("settingsView");
+$("teacherTab").onclick=()=>{$("teacherPane").classList.remove("hidden");$("studentPane").classList.add("hidden");$("teacherTab").classList.add("active");$("studentTab").classList.remove("active");};
+$("studentTab").onclick=()=>{$("studentPane").classList.remove("hidden");$("teacherPane").classList.add("hidden");$("studentTab").classList.add("active");$("teacherTab").classList.remove("active");};
+$("createGame").onclick=createRoom;$("startGame").onclick=()=>{if(!Object.keys(players).length)return alert("Tambahkan atau minta peserta bergabung terlebih dahulu.");started=true;persist();setStatus("studentStatus","Permainan dimulai! Tunggu giliranmu.");};
+$("rollTeacher").onclick=()=>{if(!Object.keys(players).length)return alert("Tambahkan peserta terlebih dahulu.");const ids=Object.keys(players);startTurn(ids[turnCount%ids.length]);};
+$("resetGame").onclick=()=>{if(!confirm("Reset posisi, skor, dan status semua peserta?"))return;Object.values(players).forEach(p=>{p.position=1;p.score=0;p.answered=[];p.shield=false;});started=false;turnCount=0;activeQuestion=null;persist();setStatus("studentStatus","Permainan direset.");};
+$("addPlayer").onclick=()=>{const id=addPlayer($("addName").value);if(id)$("addName").value="";};
+$("joinGame").onclick=()=>{const code=$("joinCode").value.trim().toUpperCase();if(code&&code!==roomCode&&isRemote){return alert("Kode ruang berbeda dari ruang yang sedang terbuka pada prototipe ini. Buat alur join-room di versi produksi.");}const id=addPlayer($("playerName").value);if(id){joinedId=id;setStatus("studentStatus",`Berhasil terdaftar sebagai ${players[id].name}. Kode ${roomCode}.`);$("playerName").value="";}};
+$("rollStudent").onclick=()=>{if(!joinedId)return alert("Isi nama lalu tekan Gabung terlebih dahulu.");startTurn(joinedId);};
+$("submitAnswer").onclick=submitAnswer;$("mode").onchange=e=>{mode=e.target.value;persist();};
+$("copyCode").onclick=async()=>{try{await navigator.clipboard.writeText(roomCode);alert("Kode disalin: "+roomCode);}catch{alert("Kode permainan: "+roomCode);}};
+$("showQr").onclick=()=>{const wrap=$("qrWrap");wrap.classList.toggle("hidden");const url=location.href.split("#")[0];$("qrImg").src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data="+encodeURIComponent(url+"?room="+roomCode);};
+$("editSquare").onchange=fillEditor;$("editVariant").onchange=fillEditor;$("editKind").onchange=()=>{$("optionFields").classList.toggle("hidden",$("editKind").value!=="mcq");};
+$("saveQuestion").onclick=saveEditor;$("exportQuestions").onclick=exportQs;$("importQuestions").onclick=()=>$("importFile").click();
+$("importFile").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const parsed=JSON.parse(await f.text());for(let n=1;n<=100;n++)if(parsed[n]&&Array.isArray(parsed[n])&&parsed[n].length===8)questions[n]=parsed[n];saveLocal();fillEditor();renderBoard();setStatus("editorMessage","Impor selesai. Pastikan setiap kotak memiliki tepat 8 variasi.");}catch(err){alert("File JSON tidak valid: "+err.message);}e.target.value="";};
+$("connectFirebase").onclick=connectFirebase;$("disconnectFirebase").onclick=()=>{if(unsubRoom)unsubRoom();isRemote=false;db=null;$("countOnline").textContent="LOCAL";setStatus("firebaseStatus","Mode lokal aktif.");};
+initQuestions();loadLocal();
+for(let n=1;n<=100;n++){const o=document.createElement("option");o.value=n;o.textContent=`Kotak ${n}`;$("editSquare").appendChild(o);}
+renderBoard();fillEditor();renderPlayers();
+const roomParam=new URLSearchParams(location.search).get("room");if(roomParam){$("joinCode").value=roomParam.toUpperCase();$("studentTab").click();}
+</script>
+</body>
+</html>
